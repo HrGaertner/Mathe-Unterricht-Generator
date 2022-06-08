@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="de-DE">
+    <head>
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <h1>Würfel Excel</h1>
+        <script src="filesaver.js"></script>
+        <script src="xlsx.js"></script>
+        <script>
+            function s2ab(s) { 
+                var buf = new ArrayBuffer(s.length); //convert s to arrayBuffer
+                var view = new Uint8Array(buf);  //create uint8array as viewer
+                for (var i=0; i<s.length; i++) view[i] = s.charCodeAt(i) & 0xFF; //convert to octet
+                return buf;    
+}
+
+            function generate(){
+                var wb = XLSX.utils.book_new();
+                wb.Props = {
+                    Title: "Wuerfel_THG2022",
+                    Subject: "uerfel",
+                    Author: "Christian Geyer",
+                    CreatedDate: new Date(2022,12,19)
+                };
+                wb.SheetNames.push("Tabelle1");
+                var ws_data = [['Wurfnummer' , 'Augenzahl', "6er Ja/Nein"]];  //change
+                for (let i = 1; i < 101; i++){
+                    if ([4, 2, 7, 13].includes(i)){
+                        var number = 3;
+                    } else{
+                        var number = Math.floor((Math.random() * 6) + 1);
+                    }
+                    if (number == 6){
+                        var is_six = 1;
+                    } else{
+                        var is_six = 0;
+                    }
+                    ws_data.push([i, number, is_six]);
+                }
+                console.log(ws_data);
+                var ws = XLSX.utils.aoa_to_sheet(ws_data);
+                wb.Sheets["Tabelle1"] = ws;
+                var wbout = XLSX.write(wb, {bookType:'xlsx',  type: 'binary'});
+                saveAs(new Blob([s2ab(wbout)],{type:"application/octet-stream"}), 'Wuerfel.xlsx');
+            }
+        </script>
+        <p onclick="generate();" style="
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor:pointer;
+          ">Generieren und Nutzungsbedingugnen aktzeptieren</p>
+          <a href="nutzungsbedingungen.html">Die Nutzungsbedingugnen</a>
+    </body>
+</html>
