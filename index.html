@@ -27,7 +27,8 @@
                 var ws_data = [['Wurfnummer' , 'Augenzahl', "6er Ja/Nein"]];  //change
                 for (let i = 1; i < 101; i++){
                     if ([4, 2, 7, 13].includes(i)){
-                        var number = 3;
+                        var pseudo = {4:2, 2:3, 7:1, 13:6}
+                        var number = pseudo[i];
                     } else{
                         var number = Math.floor((Math.random() * 6) + 1);
                     }
